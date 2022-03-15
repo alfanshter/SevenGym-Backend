@@ -18,6 +18,7 @@ class CreateMembersTable extends Migration
             $table->string('nama');
             $table->string('alamat');
             $table->string('foto');
+            $table->string('nohp');
             $table->string('kodemember')->unique();
             $table->enum('member',['harian','mingguan','bulanan','tahunan']);
             $table->date('tanggalmulai');

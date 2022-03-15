@@ -27,25 +27,60 @@ class AbsenController extends Controller
         }
 
         try {
+
             date_default_timezone_set('Asia/Jakarta');
             $hari = date('Y-m-d', time());
             $jam = date('h:i:s', time());
-            $getabsen = DB::table('absens')->where('kodemember',$request->kodemember)->where('tanggalabsen',$hari)->first();
-            if ($getabsen!=null) {
+
+            $cekmember = DB::table('members')
+            ->where('kodemember',$request->kodemember)
+            ->where('tanggalberakhir','<=',$hari)
+            ->first();
+
+            if ($cekmember==null) {
+                $getabsen = DB::table('absens')->where('kodemember',$request->kodemember)->where('tanggalabsen',$hari)->first();
+                if ($getabsen!=null) {
+                    $response = [
+                    'message' => 'sudah absen hari ini',
+                    'data' => 2 ];    
+                    return response()->json($response,Response::HTTP_OK);
+                }
+
+                $absen = DB::table('absens')->insert([
+                    'kodemember'=> $request->kodemember,
+                    'tanggalabsen'=> $hari,
+                    'jamabsen'=> $jam,
+                ]);
+
                 $response = [
-                'message' => 'sudah absen hari ini',
-                'data' => 2 ];    
-                return response()->json($response,Response::HTTP_OK);
+                    'message' => 'absen berhasil',
+                    'data' => 1 ]; 
+                    return response()->json($response,Response::HTTP_OK);
+
+            }else{
+                $response = [
+                    'message' => 'Member sudah kadaluarsa',
+                    'data' => 0 ]; 
+                    return response()->json($response,Response::HTTP_OK);
+
             }
-            $absen = DB::table('absens')->insert([
-                'kodemember'=> $request->kodemember,
-                'tanggalabsen'=> $hari,
-                'jamabsen'=> $jam,
-            ]);
-            $response = [
-                'message' => 'absen berhasil',
-                'data' => 1 ]; 
-        } catch (QueryException $th) {
+
+            // date_default_timezone_set('Asia/Jakarta');
+            // $hari = date('Y-m-d', time());
+            // $jam = date('h:i:s', time());
+            // $getabsen = DB::table('absens')->where('kodemember',$request->kodemember)->where('tanggalabsen',$hari)->first();
+            // if ($getabsen!=null) {
+            //     $response = [
+            //     'message' => 'sudah absen hari ini',
+            //     'data' => 2 ];    
+            //     return response()->json($response,Response::HTTP_OK);
+            // }
+            // $absen = DB::table('absens')->insert([
+            //     'kodemember'=> $request->kodemember,
+            //     'tanggalabsen'=> $hari,
+            //     'jamabsen'=> $jam,
+            // ]);
+         } catch (QueryException $th) {
             $response = [
                 'message' => $th->errorInfo,
                 'data' => 0 ]; 

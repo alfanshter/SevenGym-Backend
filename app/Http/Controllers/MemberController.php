@@ -19,6 +19,7 @@ class MemberController extends Controller
             'member' => 'required|string|max:255',
             'tanggalmulai' => 'required|max:255',
             'foto' => 'required|max:255',
+            'nohp' => 'required|max:255',
             'tanggalberakhir' => 'required|max:255'
             ]);
 
@@ -35,6 +36,7 @@ class MemberController extends Controller
             $produk = Member::create([
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
+                'nohp' => $request->nohp,
                 'foto' => $request->foto,
                 'kodemember' => $this->quickRandom(),
                 'member' => $request->member,
@@ -47,7 +49,7 @@ class MemberController extends Controller
         } catch (QueryException $th) {
               $response = [
                 'message' => 'Input data gagal',
-                'data' => 0 ];   
+                'data' => $th->errorInfo ];   
         }
 
         return response()->json($response,Response::HTTP_OK);
