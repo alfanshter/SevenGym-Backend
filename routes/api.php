@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\OngkosController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,3 +42,6 @@ Route::post('/register', [UsersController::class, 'register']);
 Route::post('/login', [UsersController::class, 'login']);
 //END USERS
 
+//ONGKOS
+
+Route::post('/insertongkos', [OngkosController::class, 'insertongkos']);

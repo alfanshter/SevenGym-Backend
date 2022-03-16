@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\Ongkos;
+use App\Models\Penghasilan;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,9 +45,37 @@ class MemberController extends Controller
                 'tanggalmulai' => $request->tanggalmulai,
                 'tanggalberakhir' => $request->tanggalberakhir
             ]);
+            $tipe_ongkos = 0;
+            $tipe_member = $request->member;
+            if ($tipe_member =="Harian") {
+                $tipe_ongkos = 1;
+            }
+            else if ($tipe_member =="Mingguan") {
+                $tipe_ongkos = 2;
+            }
+            else if ($tipe_member =="Bulanan") {
+                $tipe_ongkos = 3;
+            }
+
+            $cekharga = Ongkos::where('tipe',$tipe_ongkos)->first();
+            date_default_timezone_set('Asia/Jakarta');
+            $hari = date('Y-m-d', time());
+            $jam = date('h:i:s', time());
+
+            $tambahpenghasilan = Penghasilan::create([
+                'nama' => $request->nama,
+                'foto' => $request->foto,
+                'keterangan' => $request->member,
+                'is_kategori' => 0,
+                'harga' => $cekharga->harga,
+                'tanggal' => $hari,
+                'waktu' => $jam
+            ]);
+
               $response = [
                 'message' => 'Input data berhasil',
-                'data' => 1 ];   
+                'data' => 1 ];  
+                 
         } catch (QueryException $th) {
               $response = [
                 'message' => 'Input data gagal',

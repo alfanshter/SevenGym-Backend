@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOngkosTable extends Migration
+class CreatePenghasilansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,19 @@ class CreateOngkosTable extends Migration
      */
     public function up()
     {
-        //tipe 
-        //1. harian
-        //2. mingguan
-        //3. bulanan
-        Schema::create('ongkos', function (Blueprint $table) {
+        // is_kategori
+        // 0 = GYM
+        // 1 = Produk
+
+        Schema::create('penghasilans', function (Blueprint $table) {
             $table->id();
-            $table->integer('tipe');
+            $table->string('nama');
+            $table->string('foto');
+            $table->string('keterangan');
+            $table->integer('is_kategori');
             $table->integer('harga');
+            $table->date('tanggal');
+            $table->time('waktu');
             $table->timestamps();
         });
     }
@@ -32,6 +37,6 @@ class CreateOngkosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ongkos');
+        Schema::dropIfExists('penghasilans');
     }
 }

@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Ongkos;
 use App\Http\Requests\StoreOngkosRequest;
 use App\Http\Requests\UpdateOngkosRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
+
+use function GuzzleHttp\Promise\all;
 
 class OngkosController extends Controller
 {
@@ -13,6 +19,43 @@ class OngkosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function insertongkos(Request $request)
+     {
+        $validator = Validator::make($request->all(),[
+            'tipe' => ['required'],
+            'harga' => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $cekongkos = Ongkos::where('tipe',$request->tipe)->first();
+        if ($cekongkos!=null) {
+            DB::table('ongkos')->where('id',$cekongkos->id)->update($request->all());
+            $response = [
+                'message' => 'Update berhasil',
+                'status' => 1 ];    
+            return response()->json($response,Response::HTTP_OK);
+
+        }else{
+            Ongkos::create($request->all());
+            $response = [
+                'message' => 'Input data sukses',
+                'status' => 1 ];
+    
+            return response()->json($response,Response::HTTP_OK);
+    
+        }
+
+        
+
+
+
+
+     }
+     
     public function index()
     {
         //
