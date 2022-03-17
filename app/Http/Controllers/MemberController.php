@@ -62,10 +62,11 @@ class MemberController extends Controller
             $hari = date('Y-m-d', time());
             $jam = date('h:i:s', time());
 
+            $keterangan = "Pendaftaran $request->member";
             $tambahpenghasilan = Penghasilan::create([
                 'nama' => $request->nama,
                 'foto' => $request->foto,
-                'keterangan' => $request->member,
+                'keterangan' => $keterangan,
                 'is_kategori' => 0,
                 'harga' => $cekharga->harga,
                 'tanggal' => $hari,

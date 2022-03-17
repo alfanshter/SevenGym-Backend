@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OngkosController;
+use App\Http\Controllers\PenghasilanController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,5 +44,13 @@ Route::post('/login', [UsersController::class, 'login']);
 //END USERS
 
 //ONGKOS
-
 Route::post('/insertongkos', [OngkosController::class, 'insertongkos']);
+
+//Penghasilan
+Route::get('/penghasilan', [PenghasilanController::class, 'penghasilan']);
+
+Route::get('/totalpenghasilan', [PenghasilanController::class, 'totalpenghasilan']);
+Route::get('/totalhariini/{tahun?&bulan&hari?}', [PenghasilanController::class, 'totalhariini']);
+Route::get('/totalbulanini/{tahun?&bulan?}', [PenghasilanController::class, 'totalbulanini']);
+Route::get('/totalmingguini', [PenghasilanController::class, 'totalmingguini']);
+Route::get('/totaltransaksi/{tahun?&bulan&hari?}', [PenghasilanController::class, 'totaltransaksi']);
