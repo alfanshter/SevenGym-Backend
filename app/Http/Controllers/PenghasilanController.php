@@ -38,6 +38,18 @@ class PenghasilanController extends Controller
             return response()->json($response,Response::HTTP_OK);  
     }
 
+    public function getpenghasilan(Request $request)
+    {
+        $getdata = Penghasilan::orderby('created_at','desc')->get();
+        $response = [
+            'message' => 'Checkout data berhasil',
+            'data' => $getdata ];
+        
+            return response()->json($response,Response::HTTP_OK);     
+    
+    }
+
+
     public function totalhariini(Request $request)
     {
          try {
@@ -120,5 +132,5 @@ class PenghasilanController extends Controller
         return response()->json($response,Response::HTTP_OK);  
     }
 
-
+ 
 }
